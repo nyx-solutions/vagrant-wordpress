@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "ubuntu/focal64"
+  config.ssh.insert_key = true
+
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = false
+    vb.cpus = 2
+    vb.memory = "2048"
+    vb.linked_clone = true
+  end
+
+  config.vm.network "private_network", ip: "192.168.50.2"
+
+  config.vm.hostname = "wpvagrant.test"
+
+  config.hostsupdater.remove_on_suspend = true
+
+  config.trigger.before :destroy do |trigger|
+    trigger.info = "Dumping the DB before destroying the VM..."
+    trigger.run_remote = {inline: "sh /vagrant/vagrant/mysql/db_dump.sh"}
+  end
+
+  provisioning_file = 'vagrant/provisioning'
+
+  if (File.file?(provisioning_file))
+    config.vm.provision "shell",
+      inline: ". /vagrant/vagrant/provisioning"
+  end
+end

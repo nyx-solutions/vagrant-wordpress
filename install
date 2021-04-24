@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+VAGRANT_VERSION=2.2.15
+CURRENT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+PROJECT_ROOT="$(cd "${CURRENT_ROOT}" && pwd)"
+
+if [[ ! -e "${PROJECT_ROOT}" ]]; then
+  echo "Project root folder not found"
+
+  exit 1
+fi
+
+cd "${PROJECT_ROOT}" || exit 1
+
+sudo apt-get update
+sudo apt-get -y install zip virtualbox
+wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb" --no-check-certificate
+sudo apt -y install "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+rm -rf "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+vagrant --version
+vagrant plugin install vagrant-hostmanager
+vagrant plugin install vagrant-triggers
+vagrant plugin install vagrant-hostsupdater
+
+cp "${CURRENT_ROOT}/base/Vagrantfile" "${PROJECT_ROOT}/Vagrantfile"
+
+VAGRANT_SOURCE_CONFIG_FILE="${CURRENT_ROOT}/vagrant.config"
+VAGRANT_TARGET_CONFIG_FILE="${PROJECT_ROOT}/vagrant.config"
+
+if [[ ! -f "${VAGRANT_TARGET_CONFIG_FILE}" ]]; then
+    cp "${VAGRANT_SOURCE_CONFIG_FILE}" "${VAGRANT_TARGET_CONFIG_FILE}"
+fi
