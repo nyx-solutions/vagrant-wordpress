@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
+if [ ! -z "${WP_DB_NAME}" ]; then
+  echo "**** CREATING DATABASE"
 
-# if $wp_db_name is specified, then create the database and user (if neccesary)
+  mysql --defaults-extra-file=~/.mysql_root.cnf -e "CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME};"
 
-if [ ! -z $wp_db_name ] ; then
+  if [ ! -z "${WP_DB_USER}" ]; then
+    echo "**** ADDING CUSTOM USER"
 
-  echo "**** creating database"
-  mysql --defaults-extra-file=~/.mysql_root.cnf -e "CREATE DATABASE IF NOT EXISTS $wp_db_name;"
-
-  if [ ! -z "$wp_db_user" ]; then
-	  echo "**** adding custom user"
-      mysql --defaults-extra-file=~/.mysql_root.cnf -e "GRANT ALL ON $wp_db_name.* TO '$wp_db_user'@'localhost' IDENTIFIED BY '$wp_db_password'"
+    mysql --defaults-extra-file=~/.mysql_root.cnf -e "GRANT ALL ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'localhost' IDENTIFIED BY '${WP_DB_PASSWORD}'"
   fi
-
 else
-	echo "**** No database name specified - skipping db creation"
+  echo "**** NO DATABASE NAME SPECIFIED - SKIPPING DB CREATION"
 fi

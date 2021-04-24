@@ -1,0 +1,6 @@
+charset utf-8;
+
+include snippets/assets.conf;
+include snippets/deny.conf;
+include snippets/security.conf;
+include snippets/cors.conf;

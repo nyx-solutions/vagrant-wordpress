@@ -1,0 +1,140 @@
+##############################################################################
+## GENERAL RULES
+##############################################################################
+
+location = /cli {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+##############################################################################
+## NODE RULES
+##############################################################################
+
+location = /package.json {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /package-lock.json {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /yarn.lock {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /composer.json {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location = /composer.lock {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location = /README.md {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location ~ /\.ht {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location ~ /\.git {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location ~* /(.*).db$ {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location ~* ^/(node_modules|vendor|docker)(/)?(.*)$ {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+##############################################################################
+## WORDPRESS RULES
+##############################################################################
+
+location = /license.txt {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /nginx.conf {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /readme.html {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location = /xmlrpc.php {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location ~* /wp-(content|includes)/.*.php$ {
+  deny all;
+
+  access_log off;
+  log_not_found off;
+
+  return 404;
+}
+
+location ^~ /wp-content/logs {
+  deny all;
+  access_log off;
+  log_not_found off;
+}

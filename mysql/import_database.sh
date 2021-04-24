@@ -1,37 +1,32 @@
 #!/usr/bin/env bash
 
+if [ ! -z "${WP_DB_NAME}" ] && $IMPORT_DATABASE; then
+  NUMBER_OF_SQL_FILES=$(find /vagrant/vagrant-resources -maxdepth 1 -name '*.sql' | wc -l)
 
-# if $wp_db_name is specified, then create the database and user (if neccesary)
-# if import_database is specified then import database and use wp-cli to rename domain
+  case "${NUMBER_OF_SQL_FILES}" in
+  0)
+    echo "**** NO SQL FILE FOUND - CANNOT IMPORT"
+    ;;
+  1)
+    echo "**** SQL FILE FOUND - PROCEEDING WITH IMPORT"
 
-if [ ! -z $wp_db_name ] && $import_database; then
+    WP_DB_DUMP_FILE=$(find /vagrant/vagrant-resources -maxdepth 1 -name '*.sql')
 
-  # look for a sql file in the wp-vagrant folder
-  number_of_sql_files=$(find /vagrant/wp-vagrant -maxdepth 1 -name '*.sql' | wc -l)
+    echo "**** IMPORT FILENAME IS: ${WP_DB_DUMP_FILE}"
 
-  case $number_of_sql_files in
-    0)
-      echo "**** No SQL file found - cannot import"
-      ;;
-    1)
-      echo "**** SQL file found - proceeding with import"
-      wp_db_dump_file=$(find /vagrant/wp-vagrant -maxdepth 1 -name '*.sql')
-      echo "**** import filename is: $wp_db_dump_file"
-      mysql --defaults-extra-file=~/.mysql_root.cnf $wp_db_name < $wp_db_dump_file
+    mysql --defaults-extra-file=~/.mysql_root.cnf "${WP_DB_NAME}" <"${WP_DB_DUMP_FILE}"
 
-      if [ ! -z $import_site_domain ]; then
-        echo "**** wp-cli search and replace"
-        wp --path=$wp_path --allow-root search-replace $import_site_domain $hostname
-      fi
+    if [ ! -z "${IMPORT_SITE_DOMAIN}" ]; then
+      echo "**** WP-CLI SEARCH AND REPLACE"
 
-      ;;
-    *)
-      echo "**** Multiple SQL files found - aborting import"
-      ;;
-    esac
+      wp --path="${WP_PATH}" --allow-root search-replace "${IMPORT_SITE_DOMAIN}" "${HOSTNAME}"
+    fi
 
+    ;;
+  *)
+    echo "**** MULTIPLE SQL FILES FOUND - ABORTING IMPORT"
+    ;;
+  esac
 else
-
-	echo "**** No database name specified - skipping db import"
-
+  echo "**** NO DATABASE NAME SPECIFIED - SKIPPING DB IMPORT"
 fi

@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 
-#
-# load settings file
-#
-. /vagrant/wp-vagrant/settings.sh
+if [ -z "${PHP_VERSION}" ]; then
+  PHP_VERSION='7.4'
+fi
 
-# https://serversforhackers.com/c/installing-mysql-with-debconf
-debconf-set-selections <<<"mysql-server mysql-server/root_password password ${mysql_root_password}"
-debconf-set-selections <<<"mysql-server mysql-server/root_password_again password ${mysql_root_password}"
+. /vagrant/vagrant-config/environment.sh
 
-add-apt-repository -y ppa:ondrej/php
-add-apt-repository -y ppa:ondrej/nginx-mainline
+debconf-set-selections <<<"mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
+debconf-set-selections <<<"mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
+
+add-apt-repository -y ppa:ondrej/php && add-apt-repository -y ppa:ondrej/nginx-mainline
+
 apt-get update && apt-get upgrade
 
 apt-get install -y nginx \
-  "php${php_version}" \
-  "php${php_version}-fpm" \
-  "php${php_version}-gd" \
-  "php${php_version}-mysql" \
-  "php${php_version}-cgi" \
-  "php${php_version}-cli" \
-  "php${php_version}-curl" \
-  "php${php_version}-mbstring" \
-  "php${php_version}-xdebug" \
+  "php${PHP_VERSION}" \
+  "php${PHP_VERSION}-fpm" \
+  "php${PHP_VERSION}-gd" \
+  "php${PHP_VERSION}-mysql" \
+  "php${PHP_VERSION}-cgi" \
+  "php${PHP_VERSION}-cli" \
+  "php${PHP_VERSION}-curl" \
+  "php${PHP_VERSION}-mbstring" \
+  "php${PHP_VERSION}-xdebug" \
   ffmpeg \
   vim \
   git-core \
@@ -31,31 +31,29 @@ apt-get install -y nginx \
   curl \
   tmux
 
-echo "**** add byobu config"
-. /vagrant/wp-vagrant/configs/byobu.sh
+echo "**** ADD BYOBU CONFIG"
+. /vagrant/vagrant-wordpress/configs/byobu.sh
 
-echo "**** Moving nginx config files into place…"
-. /vagrant/wp-vagrant/nginx/nginx.sh
+echo "**** MOVING NGINX CONFIG FILES INTO PLACE…"
+. /vagrant/vagrant-wordpress/nginx/nginx.sh
 
-echo "**** mysql config…"
-. /vagrant/wp-vagrant/mysql/mysql.sh
+echo "**** MYSQL CONFIG…"
+. /vagrant/vagrant-wordpress/mysql/mysql.sh
 
-echo "**** Set PHP to ${php_version} and copy config files"
-. /vagrant/wp-vagrant/php/php.sh
+echo "**** SET PHP TO ${PHP_VERSION} AND COPY CONFIG FILES"
+. /vagrant/vagrant-wordpress/php/php.sh
 
-echo "Starting services…"
-service nginx restart
-service php${php_version}-fpm restart
-service mysql restart
+echo "STARTING SERVICES…"
+service nginx restart && service "php${PHP_VERSION}-fpm" restart && service mysql restart
 
 # WP-CLI
-. /vagrant/wp-vagrant/wp/wp-cli.sh
+. /vagrant/vagrant-wordpress/wordpress/wp-cli.sh
 
 # Create database
-. /vagrant/wp-vagrant/mysql/create_database.sh
+. /vagrant/vagrant-wordpress/mysql/create_database.sh
 
 # Install WP
-. /vagrant/wp-vagrant/wp/install-wp.sh
+. /vagrant/vagrant-wordpress/wordpress/install.sh
 
 # Import database
-. /vagrant/wp-vagrant/mysql/import_database.sh
+. /vagrant/vagrant-wordpress/mysql/import_database.sh

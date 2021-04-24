@@ -2,7 +2,9 @@
 
 VAGRANT_VERSION=2.2.15
 CURRENT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-PROJECT_ROOT="$(cd "${CURRENT_ROOT}" && pwd)"
+PROJECT_ROOT="$(cd "${CURRENT_ROOT}" && cd .. && pwd)"
+CONFIG_ROOT="${PROJECT_ROOT}/vagrant-config"
+RESOURCES_ROOT="${PROJECT_ROOT}/vagrant-resources"
 
 if [[ ! -e "${PROJECT_ROOT}" ]]; then
   echo "Project root folder not found"
@@ -12,20 +14,34 @@ fi
 
 cd "${PROJECT_ROOT}" || exit 1
 
-sudo apt-get update
-sudo apt-get -y install zip virtualbox
-wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb" --no-check-certificate
-sudo apt -y install "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
-rm -rf "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
-vagrant --version
-vagrant plugin install vagrant-hostmanager
-vagrant plugin install vagrant-triggers
-vagrant plugin install vagrant-hostsupdater
+mkdir -p "${CONFIG_ROOT}" || exit 1
+
+if [[ ! -f "${CONFIG_ROOT}" ]]; then
+    touch "${CONFIG_ROOT}/.gitignore"
+fi
+
+mkdir -p "${RESOURCES_ROOT}" || exit 1
+
+if [[ ! -f "${RESOURCES_ROOT}" ]]; then
+    touch "${RESOURCES_ROOT}/.gitignore"
+
+    printf "*\n!.gitignore" > "${RESOURCES_ROOT}/.gitignore"
+fi
+
+#sudo apt-get update
+#sudo apt-get -y install zip virtualbox
+#wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb" --no-check-certificate
+#sudo apt -y install "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+#rm -rf "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+#vagrant --version
+#vagrant plugin install vagrant-hostmanager
+#vagrant plugin install vagrant-triggers
+#vagrant plugin install vagrant-hostsupdater
 
 cp "${CURRENT_ROOT}/base/Vagrantfile" "${PROJECT_ROOT}/Vagrantfile"
 
-VAGRANT_SOURCE_CONFIG_FILE="${CURRENT_ROOT}/vagrant.config"
-VAGRANT_TARGET_CONFIG_FILE="${PROJECT_ROOT}/vagrant.config"
+VAGRANT_SOURCE_CONFIG_FILE="${CURRENT_ROOT}/environment.sh"
+VAGRANT_TARGET_CONFIG_FILE="${CONFIG_ROOT}/environment.sh"
 
 if [[ ! -f "${VAGRANT_TARGET_CONFIG_FILE}" ]]; then
     cp "${VAGRANT_SOURCE_CONFIG_FILE}" "${VAGRANT_TARGET_CONFIG_FILE}"
