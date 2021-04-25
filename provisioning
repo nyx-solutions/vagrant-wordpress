@@ -11,7 +11,10 @@ debconf-set-selections <<<"mysql-server mysql-server/root_password_again passwor
 
 add-apt-repository -y ppa:ondrej/php && add-apt-repository -y ppa:ondrej/nginx-mainline
 
-apt-get update && apt-get upgrade
+apt-get update -y --allow-downgrades \
+  && apt autoremove -y --allow-downgrades \
+  && apt-get upgrade -y --allow-downgrades \
+  && apt-get dist-upgrade -y --allow-downgrades
 
 apt-get install -y nginx \
   "php${PHP_VERSION}" \
@@ -29,7 +32,9 @@ apt-get install -y nginx \
   mysql-server \
   mysql-client \
   curl \
-  tmux
+  tmux \
+  zip \
+  unzip
 
 echo "**** ADD BYOBU CONFIG"
 . /vagrant/vagrant-wordpress/configs/byobu.sh
@@ -57,3 +62,6 @@ service nginx restart && service "php${PHP_VERSION}-fpm" restart && service mysq
 
 # Import database
 . /vagrant/vagrant-wordpress/mysql/import_database.sh
+
+# Install Composer
+. /vagrant/vagrant-wordpress/composer/install.sh

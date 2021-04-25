@@ -44,3 +44,4 @@ PHP
     --title="${WP_SITE_TITLE}" \
     --skip-email
 fi
+

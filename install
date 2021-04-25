@@ -28,15 +28,14 @@ if [[ ! -f "${RESOURCES_ROOT}" ]]; then
     printf "*\n!.gitignore" > "${RESOURCES_ROOT}/.gitignore"
 fi
 
-#sudo apt-get update
-#sudo apt-get -y install zip virtualbox
-#wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb" --no-check-certificate
-#sudo apt -y install "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
-#rm -rf "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
-#vagrant --version
-#vagrant plugin install vagrant-hostmanager
-#vagrant plugin install vagrant-triggers
-#vagrant plugin install vagrant-hostsupdater
+sudo apt-get update
+sudo apt-get -y install zip virtualbox
+wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb" --no-check-certificate
+sudo apt -y install "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+rm -rf "./vagrant_${VAGRANT_VERSION}_x86_64.deb"
+vagrant --version
+vagrant plugin install vagrant-hostmanager
+vagrant plugin install vagrant-hostsupdater
 
 cp "${CURRENT_ROOT}/base/Vagrantfile" "${PROJECT_ROOT}/Vagrantfile"
 

@@ -22,13 +22,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.trigger.before :destroy do |trigger|
     trigger.info = "Dumping the DB before destroying the VM..."
-    trigger.run_remote = {inline: "sh /vagrant/vagrant/mysql/db_dump.sh"}
+    trigger.run_remote = {inline: "bash /vagrant/vagrant-wordpress/mysql/db_dump.sh"}
   end
 
-  provisioning_file = 'vagrant/provisioning'
+  provisioning_file = './vagrant-wordpress/provisioning'
 
   if (File.file?(provisioning_file))
-    config.vm.provision "shell",
-      inline: ". /vagrant/vagrant/provisioning"
+    config.vm.provision "shell" do |s|
+      s.path = provisioning_file
+    end
   end
 end

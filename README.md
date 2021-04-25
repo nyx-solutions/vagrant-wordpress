@@ -11,3 +11,11 @@ git submodule add git@github.com:nyx-solutions/vagrant-wordpress.git vagrant-wor
 bash ./vagrant-wordpress/install
 
 ```
+
+Após o passo acima, rode:
+
+```bash
+
+vagrant box update && vagrant up --provision
+
+```
