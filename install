@@ -39,8 +39,8 @@ vagrant plugin install vagrant-hostsupdater
 
 cp "${CURRENT_ROOT}/base/Vagrantfile" "${PROJECT_ROOT}/Vagrantfile"
 
-VAGRANT_SOURCE_CONFIG_FILE="${CURRENT_ROOT}/environment.sh"
-VAGRANT_TARGET_CONFIG_FILE="${CONFIG_ROOT}/environment.sh"
+VAGRANT_SOURCE_CONFIG_FILE="${CURRENT_ROOT}/environment.json"
+VAGRANT_TARGET_CONFIG_FILE="${CONFIG_ROOT}/environment.json"
 
 if [[ ! -f "${VAGRANT_TARGET_CONFIG_FILE}" ]]; then
     cp "${VAGRANT_SOURCE_CONFIG_FILE}" "${VAGRANT_TARGET_CONFIG_FILE}"

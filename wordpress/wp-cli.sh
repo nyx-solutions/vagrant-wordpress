@@ -23,5 +23,5 @@ if [ ! -d "${WPCLI_DEFAULTS_FOLDER}" ]; then
 
   mkdir -p "${WPCLI_DEFAULTS_FOLDER}"
 
-  cp /vagrant/wp-vagrant/wordpress/config.yml "${WPCLI_DEFAULTS_FOLDER}/config.yml"
+  cp /vagrant/vagrant-wordpress/wordpress/config.yml "${WPCLI_DEFAULTS_FOLDER}/config.yml"
 fi

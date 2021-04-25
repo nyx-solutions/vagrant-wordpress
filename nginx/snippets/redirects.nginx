@@ -1,1 +1,1 @@
-rewrite ^/(.*)/$ /$1 permanent;
+#rewrite ^/(.*)/$ /$1 permanent;

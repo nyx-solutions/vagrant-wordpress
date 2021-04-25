@@ -6,10 +6,10 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 sudo composer self-update
 
-composer --version
+sudo runuser vagrant -c "composer --version"
 
 cd /vagrant || exit 1
 
 rm -rf vendor && rm -rf composer.lock
 
-composer install -o
+sudo runuser vagrant -c "cd /vagrant && composer install -o"

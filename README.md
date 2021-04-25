@@ -16,6 +16,14 @@ Após o passo acima, rode:
 
 ```bash
 
-vagrant box update && vagrant up --provision
+vagrant up --provision
+
+```
+
+Para atualizar a box, rode:
+
+```bash
+
+vagrant box update
 
 ```

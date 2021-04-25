@@ -2,7 +2,7 @@ server {
   listen 80;
   listen 443 ssl;
 
-  server_name %%hostname%% 192.168.2.50;
+  server_name %%hostname%% %%ip_address%%;
 
   root /vagrant;
 

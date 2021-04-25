@@ -1,9 +1,31 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'json'
+
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  environment_file = File.read('./vagrant-config/environment.json')
+  environment = JSON.parse(environment_file)
+
+  env_contents = "#!/usr/bin/env bash\n\n"
+
+  environment.each do |key, value|
+    if value.to_s == "true" or value.to_s == "false"
+      real_value = value.to_s
+    else
+      real_value = "\"" + value.to_s + "\""
+    end
+
+    env_contents += key + "=" + real_value + "\n"
+  end
+
+  env_file = './vagrant-config/environment.sh'
+
+  File.open(env_file, 'w') { |file| file.write(env_contents) }
+
   config.vm.box = "ubuntu/focal64"
   config.ssh.insert_key = true
 
@@ -14,9 +36,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.linked_clone = true
   end
 
-  config.vm.network "private_network", ip: "192.168.50.2"
+  config.vm.network "private_network", ip: environment['IP_ADDRESS']
 
-  config.vm.hostname = "wpvagrant.test"
+  config.vm.hostname = environment['HOSTNAME']
 
   config.hostsupdater.remove_on_suspend = true
 

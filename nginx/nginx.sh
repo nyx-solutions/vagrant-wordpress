@@ -36,6 +36,7 @@ cp "/vagrant/vagrant-resources/${SSL_CERT_SITE_KEY}" "/etc/nginx/ssl/${SSL_CERT_
 # rename vhost server name to hostname
 echo "NGINX VHOST CONF..."
 sed -i "s/%%hostname%%/${HOSTNAME}/" /etc/nginx/sites-available/wordpress.nginx
+sed -i "s/%%ip_address%%/${IP_ADDRESS}/" /etc/nginx/sites-available/wordpress.nginx
 sed -i "s/%%cert%%/${SSL_CERT_SITE}/" /etc/nginx/sites-available/wordpress.nginx
 sed -i "s/%%cert_key%%/${SSL_CERT_SITE_KEY}/" /etc/nginx/sites-available/wordpress.nginx
 

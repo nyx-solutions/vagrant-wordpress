@@ -1,0 +1,30 @@
+{
+  "HOSTNAME": "site.vagrant.tmp.br",
+  "IP_ADDRESS": "192.168.50.2",
+
+  "PHP_VERSION": "7.4",
+  "MYSQL_ROOT_PASSWORD": "root",
+
+  "SSL_CERT_ROOT": "nyc-authority.pem",
+  "SSL_CERT_ROOT_KEY": "nyc-authority.key",
+  "SSL_CERT_SITE": "site.vagrant.tmp.br.crt",
+  "SSL_CERT_SITE_KEY": "site.vagrant.tmp.br.key",
+
+  "WP_PATH": "/vagrant",
+
+  "INSTALL_WORDPRESS": true,
+  "INIT_WORDPRESS": true,
+
+  "WP_VERSION": "",
+  "WP_DB_NAME": "wp_vagrant",
+  "WP_DB_USER": "root",
+  "WP_DB_PASSWORD": "root",
+  "WP_ADMIN_USER": "admin",
+  "WP_ADMIN_PASSWORD": "1234",
+  "WP_ADMIN_EMAIL": "root@vagrant.tmp.br",
+
+  "WP_SITE_TITLE": "WP Vagrant",
+
+  "IMPORT_DATABASE": false,
+  "IMPORT_SITE_DOMAIN": ""
+}
